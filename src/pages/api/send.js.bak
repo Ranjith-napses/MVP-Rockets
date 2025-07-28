@@ -1,0 +1,39 @@
+// pages/api/send.js
+
+import nodemailer from "nodemailer";
+
+export default async function handler(req, res) {
+  if (req.method !== "POST") return res.status(405).send("Method not allowed");
+
+  const { name, email, phone, service, message } = req.body;
+
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+  });
+
+  const mailOptions = {
+    from: `"Contact Form" <${process.env.EMAIL_USER}>`,
+    to: process.env.EMAIL_TO,
+    subject: "New Contact Form Submission",
+    html: `
+      <h2>New Contact Request</h2>
+      <p><strong>Name:</strong> ${name}</p>
+      <p><strong>Email:</strong> ${email}</p>
+      <p><strong>Phone:</strong> ${phone}</p>
+      <p><strong>Service:</strong> ${service}</p>
+      <p><strong>Message:</strong><br/>${message}</p>
+    `,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    res.status(200).json({ status: "Message sent successfully" });
+  } catch (err) {
+    console.error("Error sending email:", err);
+    res.status(500).json({ status: "Email sending failed", error: err.message });
+  }
+}
