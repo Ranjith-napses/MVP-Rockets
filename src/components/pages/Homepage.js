@@ -1,6 +1,3 @@
-
-
-
 "use client";
 
 import React from 'react';
@@ -30,8 +27,6 @@ export default function HomePage() {
     <>
      <ScrollReset/> 
     <section id="page">
-      
-  
       <HeroSection/> 
       <StatsSection/>
       <TrustedBrandsSection/>
@@ -46,11 +41,11 @@ export default function HomePage() {
       </div>
       <ContactField1/>
       <div id="testimonials">
-        <TestimonialsSection />
+       <TestimonialsSection />
       </div>
       <FaqSection/>
       <ContactSection/>
       </section>
     </>
   );
-}  
+}
